@@ -35,38 +35,38 @@ const GameLog = (props) => {
     // const [data] = useState({path: props.data});
     // console.log(data)
     useEffect(() => {
-        
+
         const terminal = newTerminal(config, terminalTitleTemplate, 'terminal')
-        if(!!window.WebSocket && window.WebSocket.prototype.send) {
+        if (!!window.WebSocket && window.WebSocket.prototype.send) {
             // message.success('您的浏览器支持Websocket通信协议')
-        } else{
+        } else {
             message.error('对不起, 您的浏览器不支持Websocket通信协议')
         }
         // 这里的转发标识为/ws
         let wsPath
-        if(window.location.host === 'localhost:3000') {
-            wsPath = "ws://1.12.223.51:8082/ws"
+        if (window.location.host === 'localhost:3000') {
+            wsPath = "ws://192.168.31.113:8082/ws"
         } else {
             wsPath = `ws://${window.location.host}/ws`
         }
         const socket = new WebSocket(wsPath)
-        socket.onopen= ()=> {
+        socket.onopen = () => {
             console.log("webSocket连接成功")
             socket.send("nihao")
             const message = `tailf ${props.data}`
-            console.log('path',props.data)
+            console.log('path', props.data)
             socket.send(message)
         }
-        socket.onerror= ()=> {
+        socket.onerror = () => {
             console.log("连接错误");
         }
-        socket.onmessage = (e)=> {
+        socket.onmessage = (e) => {
             terminal.term.writeln(e.data)
         }
-        socket.onclose = (e)=> {
+        socket.onclose = (e) => {
             console.log('webSocket 关闭了');
         }
-        return ()=> socket.close()
+        return () => socket.close()
     }, [props.data])
 
 
@@ -77,7 +77,7 @@ const GameLog = (props) => {
                 bordered={false}
             >
                 <div className="container-children" style={{ height: "100%" }}>
-                    <div id="terminal"  />
+                    <div id="terminal" />
                 </div>
             </Card>
 

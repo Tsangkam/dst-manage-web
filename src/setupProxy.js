@@ -11,7 +11,7 @@ module.exports = function (app) {
         },
     }))
     app.use(createProxyMiddleware('/api', {
-        target: "http://1.12.223.51:8082/",
+        target: "http://192.168.31.113:8082/",
         changeOrigin: true,
     }))
     app.use(createProxyMiddleware('/version', {
@@ -28,7 +28,7 @@ module.exports = function (app) {
     }))
 
     app.use(createProxyMiddleware('/steam', {
-        target: "http://1.12.223.51:8082/",
+        target: "http://192.168.31.113:8082/",
         changeOrigin: true,
     }))
 

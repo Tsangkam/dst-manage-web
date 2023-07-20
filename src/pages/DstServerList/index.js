@@ -168,6 +168,40 @@ const DstServerList = () => {
             </div>),
         },
         {
+            disable: true,
+            title: '模组',
+            key: 'mod',
+            dataIndex: 'mod',
+            filters: true,
+            onFilter: true,
+            ellipsis: true,
+            valueType: 'select',
+            valueEnum: {
+                1: {
+                    key: '1113',
+                    text: '有模组',
+                    status: '1',
+                },
+                0: {
+                    key: '1114',
+                    text: '无模组',
+                    status: '0',
+                },
+            },
+            // eslint-disable-next-line no-unused-vars
+            render: (text, record, _, action) => (<div>
+                {record.mod === 1 && (
+                    <Image
+                        preview={false}
+                        width={28}
+                        src="https://dst.liuyh.com/static/img/dstui/icon/mods.png"
+                    />
+
+                    // <LockOutlined />
+                )}
+            </div>),
+        },
+        {
             title: '操作',
             valueType: 'option',
             key: 'option',

@@ -1,13 +1,13 @@
-import {Button, Input, message, Space} from 'antd';
+import { Button, Input, message, Space } from 'antd';
 
-import {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {useTranslation} from "react-i18next";
+import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-import {FitAddon} from "xterm-addon-fit";
+import { FitAddon } from "xterm-addon-fit";
 
 import { newTerminal } from '../../../utils/terminalUtils';
-import {masterConsoleApi} from "../../../api/gameApi";
+import { masterConsoleApi } from "../../../api/gameApi";
 
 const terminalTitleTemplate = '[log]#'
 
@@ -40,51 +40,51 @@ const config = {
 const GameLog2 = (props) => {
 
     const { t } = useTranslation()
-    
+
     useEffect(() => {
-        
+
         const terminal = newTerminal(config, terminalTitleTemplate, props.id)
         // 进行适应容器元素大小
         const fitAddon = new FitAddon()
         terminal.term.loadAddon(fitAddon)
         fitAddon.fit()
 
-        if(!!window.WebSocket && window.WebSocket.prototype.send) {
+        if (!!window.WebSocket && window.WebSocket.prototype.send) {
             // message.success('您的浏览器支持Websocket通信协议')
-        } else{
+        } else {
             message.error('对不起, 您的浏览器不支持Websocket通信协议')
         }
         // 这里的转发标识为/ws
         let wsPath
-        if(window.location.host === 'localhost:3000') {
-            wsPath = "ws://1.12.223.51:8082/ws"
+        if (window.location.host === 'localhost:3000') {
+            wsPath = "ws://192.168.31.113:8082/ws"
         } else {
             wsPath = `ws://${window.location.host}/ws`
         }
         const socket = new WebSocket(wsPath)
-        socket.onopen= ()=> {
+        socket.onopen = () => {
             console.log("webSocket连接成功")
             socket.send("nihao")
             const message = `tailf ${props.path}`
-            console.log('path',props.path)
+            console.log('path', props.path)
             socket.send(message)
         }
-        socket.onerror= ()=> {
+        socket.onerror = () => {
             console.log("连接错误");
         }
-        socket.onmessage = (e)=> {
-            
+        socket.onmessage = (e) => {
+
             terminal.term.writeln(e.data)
         }
-        socket.onclose = (e)=> {
+        socket.onclose = (e) => {
             console.log('webSocket 关闭了');
         }
         console.log(111111111111)
-        return ()=> socket.close()
+        return () => socket.close()
     }, [props.path])
 
     const [inputValue, setInputValue] = useState('');
-    const {cluster} = useParams()
+    const { cluster } = useParams()
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -96,7 +96,7 @@ const GameLog2 = (props) => {
     };
 
     function sendMasterInstruct(cluster, value) {
-        masterConsoleApi(cluster,value)
+        masterConsoleApi(cluster, value)
             .then(() => {
                 setInputValue("")
             })
@@ -104,8 +104,8 @@ const GameLog2 = (props) => {
 
     return (
         <div className="container-children" style={{ height: "100%" }}>
-            <div id={props.id}  />
-            <br/>
+            <div id={props.id} />
+            <br />
             <Space.Compact
                 style={{
                     width: '100%',
@@ -113,7 +113,7 @@ const GameLog2 = (props) => {
                 size={'middle'}
             >
                 <Input value={inputValue} onChange={handleInputChange} />
-                <Button type="primary" onClick={(event)=>handleSubmit(event)}>{t('send')}</Button>
+                <Button type="primary" onClick={(event) => handleSubmit(event)}>{t('send')}</Button>
             </Space.Compact>
         </div>
     )
