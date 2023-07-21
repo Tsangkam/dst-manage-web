@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 
 import { ProTable } from '@ant-design/pro-components';
 
-import { Button, Modal, Image, Skeleton, Card } from 'antd';
-import { dstHomeListApi, dstHomeDetailApi } from '../../api/dstApi';
+import { Button, Image, Modal, Skeleton } from 'antd';
+import { dstHomeDetailApi, dstHomeListApi } from '../../api/dstApi';
 
 import HomeDetail from './home';
 
@@ -175,17 +175,18 @@ const DstServerList = () => {
             filters: true,
             onFilter: true,
             ellipsis: true,
+            // search: false,
             valueType: 'select',
             valueEnum: {
                 1: {
                     key: '1113',
                     text: '有模组',
-                    status: '1',
+                    status: 1,
                 },
                 0: {
                     key: '1114',
                     text: '无模组',
-                    status: '0',
+                    status: 0,
                 },
             },
             // eslint-disable-next-line no-unused-vars
@@ -247,6 +248,7 @@ const DstServerList = () => {
                     console.log(sort, filter);
                     console.log('params', params)
                     const msg = await dstHomeListApi(params)
+                    console.log("result", msg)
                     return {
                         data: msg.data,
                         success: true,
